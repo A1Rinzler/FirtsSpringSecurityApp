@@ -17,12 +17,13 @@ import java.util.Collections;
  * @author : Dmitrii Frolov, a.k.a. A1Rinzler
  * @created : 13.07.2026
  **/
-@Component
+//Класс был для теста кастомной аутентификации. Пока не нужен. Удалять не буду, но он не используется в дальнейшем.
+//@Component
 public class CustomAuthProviderImpl implements AuthenticationProvider {
 
     private final PeopleService peopleService;
 
-    @Autowired
+    //@Autowired
     public CustomAuthProviderImpl(PeopleService peopleService) {
         this.peopleService = peopleService;
     }

@@ -1,6 +1,6 @@
 package com.dmitrii.spring.security.lesson.FirtsSpringSecurityApp.config;
 
-import com.dmitrii.spring.security.lesson.FirtsSpringSecurityApp.security.CustomAuthProviderImpl;
+import com.dmitrii.spring.security.lesson.FirtsSpringSecurityApp.service.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +10,8 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -20,19 +22,31 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final CustomAuthProviderImpl customAuthProvider;
+
+    private final PeopleService peopleService;
 
     @Autowired
-    public SecurityConfig(CustomAuthProviderImpl customAuthProvider) {
-        this.customAuthProvider = customAuthProvider;
+    public SecurityConfig(PeopleService peopleService) {
+        this.peopleService = peopleService;
+    }
+
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(peopleService);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        return daoAuthenticationProvider;
+
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
                 .authorizeHttpRequests(auth->auth.anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
-                .authenticationProvider(customAuthProvider);
+                .formLogin(Customizer.withDefaults());
         return httpSecurity.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return NoOpPasswordEncoder.getInstance();
     }
 }
