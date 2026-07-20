@@ -30,6 +30,7 @@ public class SecurityConfig {
         this.peopleService = peopleService;
     }
 
+    @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(peopleService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
