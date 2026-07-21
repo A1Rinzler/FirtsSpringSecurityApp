@@ -38,11 +38,30 @@ public class SecurityConfig {
 
     }
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+//        httpSecurity
+//                .authorizeHttpRequests(auth->auth.anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults());
+//        return httpSecurity.build();
+//    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
-                .authorizeHttpRequests(auth->auth.anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults());
+                .csrf(csrf->csrf
+                        .disable()
+                )
+                .authorizeHttpRequests(login -> login
+                        .requestMatchers("/login","/error").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login_action")
+                        .defaultSuccessUrl("/first",true)
+                        .failureUrl("/login?error")
+                        .permitAll()
+                );
         return httpSecurity.build();
     }
 
