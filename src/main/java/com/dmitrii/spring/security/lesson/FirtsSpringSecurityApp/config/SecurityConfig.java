@@ -10,6 +10,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -52,7 +53,7 @@ public class SecurityConfig {
                         .disable()
                 )
                 .authorizeHttpRequests(login -> login
-                        .requestMatchers("/login","/error").permitAll()
+                        .requestMatchers("/login","/register","/registration","/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -60,13 +61,16 @@ public class SecurityConfig {
                         .loginProcessingUrl("/login_action")
                         .defaultSuccessUrl("/first",true)
                         .failureUrl("/login?error")
-                        .permitAll()
-                );
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .permitAll());
         return httpSecurity.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 }
