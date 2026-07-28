@@ -9,10 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @created : 09.07.2026
  **/
 @Controller
-@RequestMapping("/first")
+@RequestMapping("")
 public class FirstController {
-    @GetMapping("")
+    @GetMapping("/first")
     public String firstOne(){
         return "firstPage";
+    }
+
+    @GetMapping("/admin")
+    public String adminPage(){
+        return "admin";
     }
 }

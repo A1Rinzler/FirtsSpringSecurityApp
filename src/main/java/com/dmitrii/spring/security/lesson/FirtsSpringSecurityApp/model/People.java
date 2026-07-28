@@ -25,6 +25,9 @@ public class People {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "role")
+    private String role;
+
 
     @Min(value = 1900, message = "Birthdate value starts from 1900 and above")
     @Column(name = "birthdate")
@@ -44,6 +47,14 @@ public class People {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public int getBirthdate() {
@@ -71,6 +82,11 @@ public class People {
 
     @Override
     public String toString() {
-        return "Person { id = " + id + " username " + username + " password " + password + " birthdate " + birthdate ;
+        return "Person { " +
+                "id = " + id +
+                " username " + username +
+                " password " + password +
+                " role " + role +
+                " birthdate " + birthdate;
     }
 }
