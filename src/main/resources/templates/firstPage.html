@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,6 +7,8 @@
 <body>
 <p>This is first page of Spring Security App</p>
 
-<a href="/logout">Logout now!</a>
+<form th:action="@{/logout}" th:method="POST">
+    <input type="submit" value="Logout">
+</form>
 </body>
 </html>
